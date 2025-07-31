@@ -23,6 +23,13 @@ export interface Spec extends TurboModule {
   initialize(clientId: string, environment: Environment): void;
 
   /**
+   * 设置导航栏样式
+   * @param tintColor 字体颜色（例如 processColor('#FFF000') as number）
+   * @param backgroundColor 背景颜色（例如 processColor('#FFFFFF') as number）
+   */
+  setNavigationBarStyle(tintColor: number, backgroundColor: number): void;
+
+  /**
    * 下载证书
    * @param phone 手机号
    * @returns Promise 包含 status/message/data

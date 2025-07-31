@@ -1,11 +1,12 @@
 #import "Ywx.h"
+#import <React/RCTConvert.h>
 #import <YWXSignSDK/YWXSignSDK.h>
 
 @implementation Ywx
 RCT_EXPORT_MODULE()
 
 - (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:(const facebook::react::ObjCTurboModule::InitParams &)params {
-    return std::make_shared<facebook::react::NativeYwxSpecJSI>(params);
+  return std::make_shared<facebook::react::NativeYwxSpecJSI>(params);
 }
 
 - (void)initialize:(nonnull NSString *)clientId environment:(double)environment {
@@ -41,6 +42,14 @@ RCT_EXPORT_MODULE()
         reject(status, message, nil);
       }
     }];
+  });
+}
+
+- (void)setNavigationBarStyle:(double)tintColor backgroundColor:(double)backgroundColor {
+  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    UIColor *convertedTintColor = [RCTConvert UIColor:@(tintColor)];
+    UIColor *convertedBackgroundColor = [RCTConvert UIColor:@(backgroundColor)];
+    [YWXSignManager.sharedManager setupUIForNavigationBarTintColor:convertedTintColor navigationBarBackgroundColor:convertedBackgroundColor];
   });
 }
 

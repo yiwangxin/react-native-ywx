@@ -1,5 +1,10 @@
-import { Text, View, StyleSheet } from 'react-native';
-import { Environment, initialize, downloadCertificate } from 'react-native-ywx';
+import { Text, View, StyleSheet, processColor } from 'react-native';
+import {
+  Environment,
+  initialize,
+  downloadCertificate,
+  setNavigationBarStyle,
+} from 'react-native-ywx';
 
 export default function App() {
   return (
@@ -10,6 +15,17 @@ export default function App() {
         }}
       >
         初始化
+      </Text>
+      <Text> </Text>
+      <Text
+        onPress={() => {
+          setNavigationBarStyle(
+            processColor('#FFF000') as number,
+            processColor('#FFFFFF') as number
+          );
+        }}
+      >
+        设置导航栏样式
       </Text>
       <Text> </Text>
       <Text
