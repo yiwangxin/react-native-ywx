@@ -1,9 +1,10 @@
-import { Text, View, StyleSheet, processColor } from 'react-native';
+import { Text, View, StyleSheet, processColor, Platform } from 'react-native';
 import {
   Environment,
   initialize,
   downloadCertificate,
   setNavigationBarStyle,
+  updateCertificate,
 } from 'react-native-ywx';
 
 export default function App() {
@@ -19,10 +20,12 @@ export default function App() {
       <Text> </Text>
       <Text
         onPress={() => {
-          setNavigationBarStyle(
-            processColor('#FFF000') as number,
-            processColor('#FFFFFF') as number
-          );
+          if (Platform.OS === 'ios') {
+            setNavigationBarStyle(
+              processColor('#FFF000') as number,
+              processColor('#FFFFFF') as number
+            );
+          }
         }}
       >
         设置导航栏样式
@@ -42,6 +45,22 @@ export default function App() {
         }}
       >
         下载证书
+      </Text>
+      <Text> </Text>
+      <Text
+        onPress={() => {
+          updateCertificate()
+            .then((res) => {
+              console.log(res.status);
+              console.log(res.message);
+              console.log(res.data);
+            })
+            .catch((e) => {
+              console.log(e.message);
+            });
+        }}
+      >
+        更新证书
       </Text>
     </View>
   );

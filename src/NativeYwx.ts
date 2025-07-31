@@ -35,6 +35,12 @@ export interface Spec extends TurboModule {
    * @returns Promise 包含 status/message/data
    */
   downloadCertificate(phone: string): Promise<Result>;
+
+  /**
+   * 更新证书
+   * @returns Promise 包含 status/message/data
+   */
+  updateCertificate(): Promise<Result>;
 }
 
 export default TurboModuleRegistry.getEnforcing<Spec>('Ywx');

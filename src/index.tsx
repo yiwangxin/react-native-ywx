@@ -30,4 +30,12 @@ export function downloadCertificate(phone: string): Promise<Result> {
   return Ywx.downloadCertificate(phone);
 }
 
+/**
+ * 更新证书
+ * @returns Promise 包含 status/message/data
+ */
+export function updateCertificate(): Promise<Result> {
+  return Ywx.updateCertificate();
+}
+
 export { Environment } from './NativeYwx';

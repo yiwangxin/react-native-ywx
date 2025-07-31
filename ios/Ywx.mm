@@ -27,6 +27,15 @@ RCT_EXPORT_MODULE()
   });
 }
 
+- (void)setNavigationBarStyle:(double)tintColor backgroundColor:(double)backgroundColor {
+  
+  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    UIColor *convertedTintColor = [RCTConvert UIColor:@(tintColor)];
+    UIColor *convertedBackgroundColor = [RCTConvert UIColor:@(backgroundColor)];
+    [YWXSignManager.sharedManager setupUIForNavigationBarTintColor:convertedTintColor navigationBarBackgroundColor:convertedBackgroundColor];
+  });
+}
+
 - (void)downloadCertificate:(NSString *)phone resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
   
   dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -45,12 +54,23 @@ RCT_EXPORT_MODULE()
   });
 }
 
-- (void)setNavigationBarStyle:(double)tintColor backgroundColor:(double)backgroundColor {
+- (void)updateCertificate:(nonnull RCTPromiseResolveBlock)resolve reject:(nonnull RCTPromiseRejectBlock)reject { 
+  
   dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-    UIColor *convertedTintColor = [RCTConvert UIColor:@(tintColor)];
-    UIColor *convertedBackgroundColor = [RCTConvert UIColor:@(backgroundColor)];
-    [YWXSignManager.sharedManager setupUIForNavigationBarTintColor:convertedTintColor navigationBarBackgroundColor:convertedBackgroundColor];
+    [YWXSignManager.sharedManager certUpdateWithCompletion:^(YWXSignStatusCode  _Nonnull status, NSString * _Nonnull message, id  _Nullable data) {
+      NSDictionary *result = @{
+        @"status": status ?: @"",
+        @"message": message ?: @"",
+        @"data": data ?: @"",
+      };
+      if (status == YWXSignStatusCodeSuccess) {
+        resolve(result);
+      } else {
+        reject(status, message, nil);
+      }
+    }];
   });
 }
+
 
 @end
