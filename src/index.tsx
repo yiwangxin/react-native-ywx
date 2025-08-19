@@ -22,6 +22,13 @@ export function setNavigationBarStyle(
 }
 
 /**
+ * 本地是否存在证书
+ */
+export function hasCertificate(): boolean {
+  return Ywx.hasCertificate();
+}
+
+/**
  * 下载证书
  * @param phone 手机号
  * @returns Promise 包含 status/message/data

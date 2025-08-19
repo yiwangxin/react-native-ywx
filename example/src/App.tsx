@@ -16,6 +16,7 @@ import {
   downloadCertificate,
   setNavigationBarStyle,
   updateCertificate,
+  hasCertificate,
 } from 'react-native-ywx';
 import Toast from 'react-native-toast-message';
 
@@ -143,6 +144,17 @@ export default function App() {
           <Item title="证书详情" hideSeparator={true} onPress={() => {}} />
         </Section>
         <Section title="其他证书相关">
+          <Item
+            title="证书是否存在"
+            onPress={() => {
+              const res = hasCertificate();
+              Toast.show({
+                type: 'info',
+                text1: '证书是否存在',
+                text2: `${res}`,
+              });
+            }}
+          />
           <Item title="清除证书" onPress={() => {}} />
           <Item title="获取用户信息" hideSeparator={true} onPress={() => {}} />
         </Section>

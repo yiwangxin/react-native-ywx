@@ -36,6 +36,11 @@ RCT_EXPORT_MODULE()
   });
 }
 
+- (NSNumber *)hasCertificate {
+  BOOL result = [YWXSignManager.sharedManager existsCert];
+  return @(result);
+}
+
 - (void)downloadCertificate:(NSString *)phone resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
   
   dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{

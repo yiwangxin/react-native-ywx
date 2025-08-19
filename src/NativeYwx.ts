@@ -30,6 +30,11 @@ export interface Spec extends TurboModule {
   setNavigationBarStyle(tintColor: number, backgroundColor: number): void;
 
   /**
+   * 本地证书是否存在
+   */
+  hasCertificate(): boolean;
+
+  /**
    * 下载证书
    * @param phone 手机号
    * @returns Promise 包含 status/message/data
