@@ -35,6 +35,12 @@ export interface Spec extends TurboModule {
   hasCertificate(): boolean;
 
   /**
+   * 指定手机号本地证书是否存在
+   * @param phone 手机号
+   */
+  hasCertificateForPhone(phone: string): boolean;
+
+  /**
    * 下载证书
    * @param phone 手机号
    * @returns Promise 包含 status/message/data

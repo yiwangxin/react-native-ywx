@@ -29,6 +29,13 @@ export function hasCertificate(): boolean {
 }
 
 /**
+ * 指定手机号是否存在证书
+ */
+export function hasCertificateForPhone(phone: string): boolean {
+  return Ywx.hasCertificateForPhone(phone);
+}
+
+/**
  * 下载证书
  * @param phone 手机号
  * @returns Promise 包含 status/message/data

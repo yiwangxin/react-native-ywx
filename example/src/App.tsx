@@ -17,6 +17,7 @@ import {
   setNavigationBarStyle,
   updateCertificate,
   hasCertificate,
+  hasCertificateForPhone,
 } from 'react-native-ywx';
 import Toast from 'react-native-toast-message';
 
@@ -29,6 +30,12 @@ export default function App() {
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scroll}>
         <Section title="初始化">
+          <TextInput
+            style={styles.textInput}
+            placeholder="请输入cliendId"
+            value={cliendId}
+            onChangeText={(value) => setCliendId(value)}
+          />
           <Item
             title="初始化"
             description="初始化SDK"
@@ -41,13 +48,7 @@ export default function App() {
                 });
               }
             }}
-          >
-            <TextInput
-              placeholder="请输入cliendId"
-              value={cliendId}
-              onChangeText={(value) => setCliendId(value)}
-            />
-          </Item>
+          />
           <Item
             title="设置导航栏样式"
             description="仅iOS生效。这里将导航栏字体设置为'#FFF000'"
@@ -66,6 +67,12 @@ export default function App() {
           />
         </Section>
         <Section title="不带子厂商的下证">
+          <TextInput
+            style={styles.textInput}
+            placeholder="请输入手机号"
+            value={phoneNumber}
+            onChangeText={(value) => setPhoneNumber(value)}
+          />
           <Item
             title="下载证书"
             onPress={() => {
@@ -94,13 +101,7 @@ export default function App() {
                   });
                 });
             }}
-          >
-            <TextInput
-              placeholder="请输入手机号"
-              value={phoneNumber}
-              onChangeText={(value) => setPhoneNumber(value)}
-            />
-          </Item>
+          />
           <Item
             title="更新证书"
             onPress={() => {
@@ -127,27 +128,46 @@ export default function App() {
           <Item title="证书详情" hideSeparator={true} onPress={() => {}} />
         </Section>
         <Section title="包含子厂商的下证">
-          <Item title="下载证书" onPress={() => {}}>
-            <TextInput
-              placeholder="请输入手机号"
-              value={phoneNumber}
-              onChangeText={(value) => setPhoneNumber(value)}
-            />
-            <TextInput
-              placeholder="请输入firmId"
-              value={firmId}
-              onChangeText={(value) => setFirmId(value)}
-            />
-          </Item>
+          <TextInput
+            style={styles.textInput}
+            placeholder="请输入firmId"
+            value={firmId}
+            onChangeText={(value) => setFirmId(value)}
+          />
+          <Item title="下载证书" onPress={() => {}} />
           <Item title="更新证书" onPress={() => {}} />
           <Item title="重置证书" onPress={() => {}} />
           <Item title="证书详情" hideSeparator={true} onPress={() => {}} />
         </Section>
         <Section title="其他证书相关">
+          <TextInput
+            style={styles.textInput}
+            placeholder="请输入手机号"
+            value={phoneNumber}
+            onChangeText={(value) => setPhoneNumber(value)}
+          />
           <Item
             title="证书是否存在"
             onPress={() => {
               const res = hasCertificate();
+              Toast.show({
+                type: 'info',
+                text1: '证书是否存在',
+                text2: `${res}`,
+              });
+            }}
+          />
+          <Item
+            title="指定手机号证书是否存在"
+            onPress={() => {
+              if (phoneNumber.length === 0) {
+                Toast.show({
+                  type: 'error',
+                  text2: '请输入手机号',
+                });
+                return;
+              }
+              const res = hasCertificateForPhone(phoneNumber);
               Toast.show({
                 type: 'info',
                 text1: '证书是否存在',
@@ -295,6 +315,10 @@ const styles = StyleSheet.create({
   sectionContent: {
     backgroundColor: '#FFFFFF',
     borderRadius: 24,
+  },
+  textInput: {
+    minHeight: 50,
+    padding: 10,
   },
   item: {},
   itemContent: {
