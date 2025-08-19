@@ -36,49 +36,145 @@ RCT_EXPORT_MODULE()
   });
 }
 
-- (NSNumber *)hasCertificate {
-  BOOL result = [YWXSignManager.sharedManager existsCert];
+- (NSNumber *)hasCertificate:(NSString *)phone {
+  BOOL result;
+  if (phone != nil && phone.length > 0) {
+    result = [YWXSignManager.sharedManager existsCertWithPhone:phone];
+  } else {
+    result = [YWXSignManager.sharedManager existsCert];
+  }
   return @(result);
 }
 
-- (NSNumber *)hasCertificateForPhone:(NSString *)phone {
-  BOOL result = [YWXSignManager.sharedManager existsCertWithPhone:phone];
-  return @(result);
-}
-
-- (void)downloadCertificate:(NSString *)phone resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
+- (void)downloadCertificate:(NSString *)phone firmId:(NSString *)firmId resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
   
   dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-    [YWXSignManager.sharedManager certDownWithPhone:phone completion:^(YWXSignStatusCode  _Nonnull status, NSString * _Nonnull message, id  _Nullable data) {
-      NSDictionary *result = @{
-        @"status": status ?: @"",
-        @"message": message ?: @"",
-        @"data": data ?: @"",
-      };
-      if (status == YWXSignStatusCodeSuccess) {
-        resolve(result);
-      } else {
-        reject(status, message, nil);
-      }
-    }];
+    if (firmId != nil && firmId.length > 0) {
+      [YWXSignManager.sharedManager certDownWithPhone:phone firmId:firmId completion:^(YWXSignStatusCode  _Nonnull status, NSString * _Nonnull message, id  _Nullable data) {
+        NSDictionary *result = @{
+          @"status": status ?: @"",
+          @"message": message ?: @"",
+          @"data": data ?: @"",
+        };
+        if (status == YWXSignStatusCodeSuccess) {
+          resolve(result);
+        } else {
+          reject(status, message, nil);
+        }
+      }];
+    } else {
+      [YWXSignManager.sharedManager certDownWithPhone:phone completion:^(YWXSignStatusCode  _Nonnull status, NSString * _Nonnull message, id  _Nullable data) {
+        NSDictionary *result = @{
+          @"status": status ?: @"",
+          @"message": message ?: @"",
+          @"data": data ?: @"",
+        };
+        if (status == YWXSignStatusCodeSuccess) {
+          resolve(result);
+        } else {
+          reject(status, message, nil);
+        }
+      }];
+    }
   });
 }
 
-- (void)updateCertificate:(nonnull RCTPromiseResolveBlock)resolve reject:(nonnull RCTPromiseRejectBlock)reject { 
+- (void)updateCertificate:(NSString *)firmId resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
   
   dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-    [YWXSignManager.sharedManager certUpdateWithCompletion:^(YWXSignStatusCode  _Nonnull status, NSString * _Nonnull message, id  _Nullable data) {
-      NSDictionary *result = @{
-        @"status": status ?: @"",
-        @"message": message ?: @"",
-        @"data": data ?: @"",
-      };
-      if (status == YWXSignStatusCodeSuccess) {
-        resolve(result);
-      } else {
-        reject(status, message, nil);
-      }
-    }];
+    if (firmId != nil && firmId.length > 0) {
+      [YWXSignManager.sharedManager certUpdateWithFirmId:firmId completion:^(YWXSignStatusCode  _Nonnull status, NSString * _Nonnull message, id  _Nullable data) {
+        NSDictionary *result = @{
+          @"status": status ?: @"",
+          @"message": message ?: @"",
+          @"data": data ?: @"",
+        };
+        if (status == YWXSignStatusCodeSuccess) {
+          resolve(result);
+        } else {
+          reject(status, message, nil);
+        }
+      }];
+    } else {
+      [YWXSignManager.sharedManager certUpdateWithCompletion:^(YWXSignStatusCode  _Nonnull status, NSString * _Nonnull message, id  _Nullable data) {
+        NSDictionary *result = @{
+          @"status": status ?: @"",
+          @"message": message ?: @"",
+          @"data": data ?: @"",
+        };
+        if (status == YWXSignStatusCodeSuccess) {
+          resolve(result);
+        } else {
+          reject(status, message, nil);
+        }
+      }];
+    }
+  });
+}
+
+- (void)resetCertificatePin:(NSString *)firmId resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
+  
+  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    if (firmId != nil && firmId.length > 0) {
+      [YWXSignManager.sharedManager certResetPinWithFirmId:firmId completion:^(YWXSignStatusCode  _Nonnull status, NSString * _Nonnull message, id  _Nullable data) {
+        NSDictionary *result = @{
+          @"status": status ?: @"",
+          @"message": message ?: @"",
+          @"data": data ?: @"",
+        };
+        if (status == YWXSignStatusCodeSuccess) {
+          resolve(result);
+        } else {
+          reject(status, message, nil);
+        }
+      }];
+    } else {
+      [YWXSignManager.sharedManager certResetPinWithCompletion:^(YWXSignStatusCode  _Nonnull status, NSString * _Nonnull message, id  _Nullable data) {
+        NSDictionary *result = @{
+          @"status": status ?: @"",
+          @"message": message ?: @"",
+          @"data": data ?: @"",
+        };
+        if (status == YWXSignStatusCodeSuccess) {
+          resolve(result);
+        } else {
+          reject(status, message, nil);
+        }
+      }];
+    }
+  });
+}
+
+- (void)showCertificateDetail:(NSString *)firmId resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
+  
+  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    if (firmId != nil && firmId.length > 0) {
+      [YWXSignManager.sharedManager showCertDetailWithFirmId:firmId completion:^(YWXSignStatusCode  _Nonnull status, NSString * _Nonnull message, id  _Nullable data) {
+        NSDictionary *result = @{
+          @"status": status ?: @"",
+          @"message": message ?: @"",
+          @"data": data ?: @"",
+        };
+        if (status == YWXSignStatusCodeSuccess) {
+          resolve(result);
+        } else {
+          reject(status, message, nil);
+        }
+      }];
+    } else {
+      [YWXSignManager.sharedManager showCertDetailWithCompletion:^(YWXSignStatusCode  _Nonnull status, NSString * _Nonnull message, id  _Nullable data) {
+        NSDictionary *result = @{
+          @"status": status ?: @"",
+          @"message": message ?: @"",
+          @"data": data ?: @"",
+        };
+        if (status == YWXSignStatusCodeSuccess) {
+          resolve(result);
+        } else {
+          reject(status, message, nil);
+        }
+      }];
+    }
   });
 }
 

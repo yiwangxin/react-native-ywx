@@ -31,27 +31,38 @@ export interface Spec extends TurboModule {
 
   /**
    * 本地证书是否存在
-   */
-  hasCertificate(): boolean;
-
-  /**
-   * 指定手机号本地证书是否存在
    * @param phone 手机号
    */
-  hasCertificateForPhone(phone: string): boolean;
+  hasCertificate(phone?: string): boolean;
 
   /**
    * 下载证书
    * @param phone 手机号
+   * @param firmId 子厂商id
    * @returns Promise 包含 status/message/data
    */
-  downloadCertificate(phone: string): Promise<Result>;
+  downloadCertificate(phone: string, firmId?: string): Promise<Result>;
 
   /**
    * 更新证书
+   * @param firmId 子厂商id
    * @returns Promise 包含 status/message/data
    */
-  updateCertificate(): Promise<Result>;
+  updateCertificate(firmId?: string): Promise<Result>;
+
+  /**
+   * 重置证书 PIN
+   * @param firmId 子厂商id
+   * @returns Promise 包含 status/message/data
+   */
+  resetCertificatePin(firmId?: string): Promise<Result>;
+
+  /**
+   * 证书详情
+   * @param firmId 子厂商id
+   * @returns Promise 包含 status/message/data
+   */
+  showCertificateDetail(firmId?: string): Promise<Result>;
 }
 
 export default TurboModuleRegistry.getEnforcing<Spec>('Ywx');

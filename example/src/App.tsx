@@ -17,7 +17,8 @@ import {
   setNavigationBarStyle,
   updateCertificate,
   hasCertificate,
-  hasCertificateForPhone,
+  resetCertificatePin,
+  showCertificateDetail,
 } from 'react-native-ywx';
 import Toast from 'react-native-toast-message';
 
@@ -25,6 +26,7 @@ export default function App() {
   const [cliendId, setCliendId] = useState('2000111111110002');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [firmId, setFirmId] = useState('');
+  const [specificPhone, setSpecificPhone] = useState('');
 
   return (
     <SafeAreaView style={styles.container}>
@@ -40,13 +42,18 @@ export default function App() {
             title="初始化"
             description="初始化SDK"
             onPress={() => {
-              if (cliendId.length > 0) {
-                initialize(cliendId, Environment.Dev);
+              if (cliendId.length === 0) {
                 Toast.show({
-                  type: 'success',
-                  text1: '初始化完成',
+                  type: 'error',
+                  text2: '请输入clientId',
                 });
+                return;
               }
+              initialize(cliendId, Environment.Dev);
+              Toast.show({
+                type: 'success',
+                text1: '初始化完成',
+              });
             }}
           />
           <Item
@@ -66,13 +73,40 @@ export default function App() {
             }}
           />
         </Section>
-        <Section title="不带子厂商的下证">
+        <Section title="证书相关">
           <TextInput
             style={styles.textInput}
             placeholder="请输入手机号"
             value={phoneNumber}
             onChangeText={(value) => setPhoneNumber(value)}
           />
+          <TextInput
+            style={styles.textInput}
+            placeholder="请输入firmId"
+            value={firmId}
+            onChangeText={(value) => setFirmId(value)}
+          />
+          <Item
+            title="证书是否存在"
+            description="输入指定手机号则查询指定手机号是否存在"
+            onPress={() => {
+              const res = hasCertificate(
+                specificPhone.length > 0 ? specificPhone : undefined
+              );
+              Toast.show({
+                type: 'info',
+                text1: '证书是否存在',
+                text2: `${res}`,
+              });
+            }}
+          >
+            <TextInput
+              style={styles.textInput}
+              placeholder="请输入指定的手机号"
+              value={specificPhone}
+              onChangeText={(value) => setSpecificPhone(value)}
+            />
+          </Item>
           <Item
             title="下载证书"
             onPress={() => {
@@ -83,7 +117,10 @@ export default function App() {
                 });
                 return;
               }
-              downloadCertificate(phoneNumber)
+              downloadCertificate(
+                phoneNumber,
+                firmId.length === 0 ? undefined : firmId
+              )
                 .then((res) => {
                   console.log(res.status);
                   console.log(res.message);
@@ -105,7 +142,7 @@ export default function App() {
           <Item
             title="更新证书"
             onPress={() => {
-              updateCertificate()
+              updateCertificate(firmId.length === 0 ? undefined : firmId)
                 .then((res) => {
                   console.log(res.status);
                   console.log(res.message);
@@ -124,55 +161,49 @@ export default function App() {
                 });
             }}
           />
-          <Item title="重置证书" onPress={() => {}} />
-          <Item title="证书详情" hideSeparator={true} onPress={() => {}} />
-        </Section>
-        <Section title="包含子厂商的下证">
-          <TextInput
-            style={styles.textInput}
-            placeholder="请输入firmId"
-            value={firmId}
-            onChangeText={(value) => setFirmId(value)}
-          />
-          <Item title="下载证书" onPress={() => {}} />
-          <Item title="更新证书" onPress={() => {}} />
-          <Item title="重置证书" onPress={() => {}} />
-          <Item title="证书详情" hideSeparator={true} onPress={() => {}} />
-        </Section>
-        <Section title="其他证书相关">
-          <TextInput
-            style={styles.textInput}
-            placeholder="请输入手机号"
-            value={phoneNumber}
-            onChangeText={(value) => setPhoneNumber(value)}
-          />
           <Item
-            title="证书是否存在"
+            title="重置证书"
             onPress={() => {
-              const res = hasCertificate();
-              Toast.show({
-                type: 'info',
-                text1: '证书是否存在',
-                text2: `${res}`,
-              });
+              resetCertificatePin(firmId.length === 0 ? undefined : firmId)
+                .then((res) => {
+                  console.log(res.status);
+                  console.log(res.message);
+                  console.log(res.data);
+                  Toast.show({
+                    type: 'success',
+                    text1: res.message,
+                    text2: JSON.stringify(res.data),
+                  });
+                })
+                .catch((e) => {
+                  Toast.show({
+                    type: 'error',
+                    text2: e.message,
+                  });
+                });
             }}
           />
           <Item
-            title="指定手机号证书是否存在"
+            title="证书详情"
+            hideSeparator={true}
             onPress={() => {
-              if (phoneNumber.length === 0) {
-                Toast.show({
-                  type: 'error',
-                  text2: '请输入手机号',
+              showCertificateDetail(firmId.length === 0 ? undefined : firmId)
+                .then((res) => {
+                  console.log(res.status);
+                  console.log(res.message);
+                  console.log(res.data);
+                  Toast.show({
+                    type: 'success',
+                    text1: res.message,
+                    text2: JSON.stringify(res.data),
+                  });
+                })
+                .catch((e) => {
+                  Toast.show({
+                    type: 'error',
+                    text2: e.message,
+                  });
                 });
-                return;
-              }
-              const res = hasCertificateForPhone(phoneNumber);
-              Toast.show({
-                type: 'info',
-                text1: '证书是否存在',
-                text2: `${res}`,
-              });
             }}
           />
           <Item title="清除证书" onPress={() => {}} />

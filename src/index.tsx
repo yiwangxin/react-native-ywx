@@ -23,33 +23,50 @@ export function setNavigationBarStyle(
 
 /**
  * 本地是否存在证书
+ * @param phone 手机号
  */
-export function hasCertificate(): boolean {
-  return Ywx.hasCertificate();
-}
-
-/**
- * 指定手机号是否存在证书
- */
-export function hasCertificateForPhone(phone: string): boolean {
-  return Ywx.hasCertificateForPhone(phone);
+export function hasCertificate(phone?: string): boolean {
+  return Ywx.hasCertificate(phone);
 }
 
 /**
  * 下载证书
  * @param phone 手机号
+ * @param firmId 子厂商id
  * @returns Promise 包含 status/message/data
  */
-export function downloadCertificate(phone: string): Promise<Result> {
-  return Ywx.downloadCertificate(phone);
+export function downloadCertificate(
+  phone: string,
+  firmId?: string
+): Promise<Result> {
+  return Ywx.downloadCertificate(phone, firmId);
 }
 
 /**
  * 更新证书
+ * @param firmId 子厂商id
  * @returns Promise 包含 status/message/data
  */
-export function updateCertificate(): Promise<Result> {
-  return Ywx.updateCertificate();
+export function updateCertificate(firmId?: string): Promise<Result> {
+  return Ywx.updateCertificate(firmId);
+}
+
+/**
+ * 重置证书 PIN
+ * @param firmId 子厂商id
+ * @returns Promise 包含 status/message/data
+ */
+export function resetCertificatePin(firmId?: string): Promise<Result> {
+  return Ywx.resetCertificatePin(firmId);
+}
+
+/**
+ * 证书详情
+ * @param firmId 子厂商id
+ * @returns Promise 包含 status/message/data
+ */
+export function showCertificateDetail(firmId?: string): Promise<Result> {
+  return Ywx.showCertificateDetail(firmId);
 }
 
 export { Environment } from './NativeYwx';
