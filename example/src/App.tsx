@@ -1,4 +1,15 @@
-import { Text, View, StyleSheet, processColor, Platform } from 'react-native';
+import { useState, type ReactNode } from 'react';
+import {
+  Text,
+  StyleSheet,
+  processColor,
+  Platform,
+  SafeAreaView,
+  ScrollView,
+  View,
+  TouchableOpacity,
+  TextInput,
+} from 'react-native';
 import {
   Environment,
   initialize,
@@ -6,62 +17,250 @@ import {
   setNavigationBarStyle,
   updateCertificate,
 } from 'react-native-ywx';
+import Toast from 'react-native-toast-message';
 
 export default function App() {
+  const [cliendId, setCliendId] = useState('2000111111110002');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [firmId, setFirmId] = useState('');
+
   return (
-    <View style={styles.container}>
-      <Text
+    <SafeAreaView style={styles.container}>
+      <ScrollView style={styles.scroll}>
+        <Section title="初始化">
+          <Item
+            title="初始化"
+            description="初始化SDK"
+            onPress={() => {
+              if (cliendId.length > 0) {
+                initialize(cliendId, Environment.Dev);
+                Toast.show({
+                  type: 'success',
+                  text1: '初始化完成',
+                });
+              }
+            }}
+          >
+            <TextInput
+              placeholder="请输入cliendId"
+              value={cliendId}
+              onChangeText={(value) => setCliendId(value)}
+            />
+          </Item>
+          <Item
+            title="设置导航栏样式"
+            description="仅iOS生效。这里将导航栏字体设置为'#FFF000'"
+            onPress={() => {
+              if (Platform.OS === 'ios') {
+                setNavigationBarStyle(
+                  processColor('#FFF000') as number,
+                  processColor('#FFFFFF') as number
+                );
+                Toast.show({
+                  type: 'success',
+                  text1: '设置完成',
+                });
+              }
+            }}
+          />
+        </Section>
+        <Section title="不带子厂商的下证">
+          <Item
+            title="下载证书"
+            onPress={() => {
+              if (phoneNumber.length === 0) {
+                Toast.show({
+                  type: 'error',
+                  text2: '请输入手机号',
+                });
+                return;
+              }
+              downloadCertificate(phoneNumber)
+                .then((res) => {
+                  console.log(res.status);
+                  console.log(res.message);
+                  console.log(res.data);
+                  Toast.show({
+                    type: 'success',
+                    text1: res.message,
+                    text2: JSON.stringify(res.data),
+                  });
+                })
+                .catch((e) => {
+                  Toast.show({
+                    type: 'error',
+                    text2: e.message,
+                  });
+                });
+            }}
+          >
+            <TextInput
+              placeholder="请输入手机号"
+              value={phoneNumber}
+              onChangeText={(value) => setPhoneNumber(value)}
+            />
+          </Item>
+          <Item
+            title="更新证书"
+            onPress={() => {
+              updateCertificate()
+                .then((res) => {
+                  console.log(res.status);
+                  console.log(res.message);
+                  console.log(res.data);
+                  Toast.show({
+                    type: 'success',
+                    text1: res.message,
+                    text2: JSON.stringify(res.data),
+                  });
+                })
+                .catch((e) => {
+                  Toast.show({
+                    type: 'error',
+                    text2: e.message,
+                  });
+                });
+            }}
+          />
+          <Item title="重置证书" onPress={() => {}} />
+          <Item title="证书详情" hideSeparator={true} onPress={() => {}} />
+        </Section>
+        <Section title="包含子厂商的下证">
+          <Item title="下载证书" onPress={() => {}}>
+            <TextInput
+              placeholder="请输入手机号"
+              value={phoneNumber}
+              onChangeText={(value) => setPhoneNumber(value)}
+            />
+            <TextInput
+              placeholder="请输入firmId"
+              value={firmId}
+              onChangeText={(value) => setFirmId(value)}
+            />
+          </Item>
+          <Item title="更新证书" onPress={() => {}} />
+          <Item title="重置证书" onPress={() => {}} />
+          <Item title="证书详情" hideSeparator={true} onPress={() => {}} />
+        </Section>
+        <Section title="其他证书相关">
+          <Item title="清除证书" onPress={() => {}} />
+          <Item title="获取用户信息" hideSeparator={true} onPress={() => {}} />
+        </Section>
+        <Section title="签章相关">
+          <Item title="签章图片 base64" onPress={() => {}} />
+          <Item title="配置签章" onPress={() => {}} />
+          <Item
+            title="批量配置签章"
+            description="医网信App专用"
+            hideSeparator={true}
+            onPress={() => {}}
+          />
+        </Section>
+        <Section title="签名相关">
+          <Item title="普通签名" onPress={() => {}} />
+          <Item
+            title="批量签名"
+            description="医网信App专用"
+            onPress={() => {}}
+          />
+          <Item
+            title="协同签名"
+            description="医网信App专用"
+            onPress={() => {}}
+          />
+          <Item
+            title="开始Oauth登录"
+            description="医网信App专用"
+            hideSeparator={true}
+            onPress={() => {}}
+          />
+        </Section>
+        <Section title="二维码相关">
+          <Item title="处理二维码" onPress={() => {}} />
+          <Item
+            title="处理二维码"
+            description="包含是否处理授权登录"
+            hideSeparator={true}
+            onPress={() => {}}
+          />
+        </Section>
+        <Section title="自动签">
+          <Item title="开启自动签名" onPress={() => {}} />
+          <Item title="关闭自动签名" onPress={() => {}} />
+          <Item
+            title="开启自动签名"
+            description="医网信App专用"
+            onPress={() => {}}
+          />
+          <Item
+            title="关闭自动签名"
+            description="医网信App专用"
+            onPress={() => {}}
+          />
+          <Item
+            title="获取自动签名信息"
+            hideSeparator={true}
+            onPress={() => {}}
+          />
+        </Section>
+        <Section title="免密">
+          <Item title="开启免密签名" onPress={() => {}} />
+          <Item title="关闭免密签名" onPress={() => {}} />
+          <Item title="免密状态" hideSeparator={true} onPress={() => {}} />
+        </Section>
+        <Section title="生物识别">
+          <Item title="开启生物识别" onPress={() => {}} />
+          <Item title="关闭生物识别" onPress={() => {}} />
+          <Item title="生物识别状态" hideSeparator={true} onPress={() => {}} />
+        </Section>
+        <Section title="授权签名">
+          <Item title="开启授权签名" onPress={() => {}} />
+          <Item title="关闭授权签名" hideSeparator={true} onPress={() => {}} />
+        </Section>
+        <Section title="配置信息" />
+      </ScrollView>
+      <Toast />
+    </SafeAreaView>
+  );
+}
+
+function Section(props: { title: string; children?: ReactNode }) {
+  return (
+    <View style={styles.section}>
+      <Text style={styles.sectionTitle}>{props.title}</Text>
+      {props.children && (
+        <View style={styles.sectionContent}>{props.children}</View>
+      )}
+    </View>
+  );
+}
+
+function Item(props: {
+  title: string;
+  description?: string;
+  onPress?: () => void;
+  hideSeparator?: boolean;
+  children?: ReactNode;
+}) {
+  return (
+    <View style={styles.item}>
+      <TouchableOpacity
+        style={styles.itemContent}
         onPress={() => {
-          initialize('123', Environment.Dev);
+          props.onPress && props.onPress();
         }}
       >
-        初始化
-      </Text>
-      <Text> </Text>
-      <Text
-        onPress={() => {
-          if (Platform.OS === 'ios') {
-            setNavigationBarStyle(
-              processColor('#FFF000') as number,
-              processColor('#FFFFFF') as number
-            );
-          }
-        }}
-      >
-        设置导航栏样式
-      </Text>
-      <Text> </Text>
-      <Text
-        onPress={() => {
-          downloadCertificate('13012345678')
-            .then((res) => {
-              console.log(res.status);
-              console.log(res.message);
-              console.log(res.data);
-            })
-            .catch((e) => {
-              console.log(e.message);
-            });
-        }}
-      >
-        下载证书
-      </Text>
-      <Text> </Text>
-      <Text
-        onPress={() => {
-          updateCertificate()
-            .then((res) => {
-              console.log(res.status);
-              console.log(res.message);
-              console.log(res.data);
-            })
-            .catch((e) => {
-              console.log(e.message);
-            });
-        }}
-      >
-        更新证书
-      </Text>
+        <Text style={styles.itemTitle} numberOfLines={1}>
+          {props.title}
+        </Text>
+        {props.description && (
+          <Text style={styles.itemDescription}>{props.description}</Text>
+        )}
+      </TouchableOpacity>
+      {props.children && (
+        <View style={styles.itemChildren}>{props.children}</View>
+      )}
+      {props.hideSeparator !== true && <View style={styles.separator} />}
     </View>
   );
 }
@@ -69,7 +268,45 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
+    backgroundColor: '#EEEEEE',
+  },
+  scroll: {},
+  section: {
+    marginHorizontal: 10,
+    marginVertical: 10,
+  },
+  sectionTitle: {
+    fontSize: 32,
+    fontWeight: '800',
+    marginVertical: 10,
+  },
+  sectionContent: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 24,
+  },
+  item: {},
+  itemContent: {
+    padding: 10,
+    minHeight: 50,
     justifyContent: 'center',
+  },
+  itemTitle: {
+    fontSize: 18,
+    fontWeight: '500',
+  },
+  itemDescription: {
+    marginTop: 10,
+    fontSize: 14,
+    fontWeight: '400',
+    color: '#888888',
+  },
+  itemChildren: {
+    margin: 10,
+  },
+  separator: {
+    height: 1,
+    width: '100%',
+    backgroundColor: '#EEEEEE',
+    marginHorizontal: 0,
   },
 });
