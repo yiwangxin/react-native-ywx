@@ -10287,6 +10287,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-native-toast-message@npm:^2.3.3":
+  version: 2.3.3
+  resolution: "react-native-toast-message@npm:2.3.3"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 313fe6e6b6437b2384d13f8987a141f9aa2df0930a668628276ed5ea990917e7d953dfa1584aa4991326ee9430baab1b735adf0b4a9861e702996617a583cc33
+  languageName: node
+  linkType: hard
+
 "react-native-ywx-example@workspace:example":
   version: 0.0.0-use.local
   resolution: "react-native-ywx-example@workspace:example"
@@ -10305,6 +10315,7 @@ __metadata:
     react-native: 0.79.2
     react-native-builder-bob: ^0.40.8
     react-native-monorepo-config: ^0.1.9
+    react-native-toast-message: ^2.3.3
   languageName: unknown
   linkType: soft
 
