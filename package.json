@@ -1,6 +1,6 @@
 {
   "name": "@digitalyixin/react-native-ywx",
-  "version": "0.1.0",
+  "version": "1.0.0-beta.0",
   "description": "react-native-ywx",
   "main": "./lib/module/index.js",
   "types": "./lib/typescript/src/index.d.ts",
