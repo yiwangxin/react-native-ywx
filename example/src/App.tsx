@@ -19,11 +19,37 @@ import {
   hasCertificate,
   resetCertificatePin,
   showCertificateDetail,
+  clearCertificate,
+  getUserInfo,
+  getSignatureBase64,
+  drawStamp,
+  getCurrentEnvironment,
+  getCurrentEnvironmentUrl,
+  getVersion,
+  getCurrentLanguage,
+  getOpenId,
+  changeLanguage,
+  showPinInput,
+  getAutoSignInfo,
+  enablePinExemption,
+  clearPin,
+  isPinExempt,
+  enableBiometricAuth,
+  disableBiometricAuth,
+  isBiometricAuthEnabled,
+  // sign,
+  // teamSign,
+  // startOauthLogin,
+  // handleQrCode,
+  // startAutoSign,
+  // stopAutoSign,
+  // grantSignature,
+  // revokeSignature,
 } from 'react-native-ywx';
 import Toast from 'react-native-toast-message';
 
 export default function App() {
-  const [cliendId, setCliendId] = useState('2000111111110002');
+  const [cliendId, setCliendId] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [firmId, setFirmId] = useState('');
   const [specificPhone, setSpecificPhone] = useState('');
@@ -206,81 +232,493 @@ export default function App() {
                 });
             }}
           />
-          <Item title="清除证书" onPress={() => {}} />
-          <Item title="获取用户信息" hideSeparator={true} onPress={() => {}} />
+          <Item
+            title="清除证书"
+            onPress={() => {
+              clearCertificate();
+              Toast.show({
+                type: 'success',
+                text2: '已清除证书',
+              });
+            }}
+          />
+          <Item
+            title="获取用户信息"
+            hideSeparator={true}
+            onPress={() => {
+              getUserInfo()
+                .then((res) => {
+                  console.log(res.status);
+                  console.log(res.message);
+                  console.log(res.data);
+                  Toast.show({
+                    type: 'success',
+                    text1: res.message,
+                    text2: JSON.stringify(res.data),
+                  });
+                })
+                .catch((e) => {
+                  Toast.show({
+                    type: 'error',
+                    text2: e.message,
+                  });
+                });
+            }}
+          />
         </Section>
         <Section title="签章相关">
-          <Item title="签章图片 base64" onPress={() => {}} />
-          <Item title="配置签章" onPress={() => {}} />
           <Item
-            title="批量配置签章"
-            description="医网信App专用"
-            hideSeparator={true}
-            onPress={() => {}}
+            title="签章图片 base64"
+            onPress={() => {
+              const res = getSignatureBase64();
+              Toast.show({
+                type: 'success',
+                text2: JSON.stringify(res),
+              });
+            }}
+          />
+          <Item
+            title="配置签章"
+            onPress={() => {
+              drawStamp()
+                .then((res) => {
+                  console.log(res.status);
+                  console.log(res.message);
+                  console.log(res.data);
+                  Toast.show({
+                    type: 'success',
+                    text1: res.message,
+                    text2: JSON.stringify(res.data),
+                  });
+                })
+                .catch((e) => {
+                  Toast.show({
+                    type: 'error',
+                    text2: e.message,
+                  });
+                });
+            }}
           />
         </Section>
         <Section title="签名相关">
-          <Item title="普通签名" onPress={() => {}} />
           <Item
-            title="批量签名"
-            description="医网信App专用"
-            onPress={() => {}}
+            title="签名"
+            onPress={() => {
+              // TODO: todo
+              Toast.show({ type: 'info', text1: '暂无示例' });
+              // sign([], firmId)
+              //   .then((res) => {
+              //     console.log(res.status);
+              //     console.log(res.message);
+              //     console.log(res.data);
+              //     Toast.show({
+              //       type: 'success',
+              //       text1: res.message,
+              //       text2: JSON.stringify(res.data),
+              //     });
+              //   })
+              //   .catch((e) => {
+              //     Toast.show({
+              //       type: 'error',
+              //       text2: e.message,
+              //     });
+              //   });
+            }}
           />
           <Item
             title="协同签名"
             description="医网信App专用"
-            onPress={() => {}}
+            onPress={() => {
+              // TODO: todo
+              Toast.show({ type: 'info', text1: '暂无示例' });
+              // teamSign([])
+              //   .then((res) => {
+              //     console.log(res.status);
+              //     console.log(res.message);
+              //     console.log(res.data);
+              //     Toast.show({
+              //       type: 'success',
+              //       text1: res.message,
+              //       text2: JSON.stringify(res.data),
+              //     });
+              //   })
+              //   .catch((e) => {
+              //     Toast.show({
+              //       type: 'error',
+              //       text2: e.message,
+              //     });
+              //   });
+            }}
           />
           <Item
             title="开始Oauth登录"
             description="医网信App专用"
             hideSeparator={true}
-            onPress={() => {}}
+            onPress={() => {
+              // TODO: todo
+              Toast.show({ type: 'info', text1: '暂无示例' });
+              // startOauthLogin('')
+              //   .then((res) => {
+              //     console.log(res.status);
+              //     console.log(res.message);
+              //     console.log(res.data);
+              //     Toast.show({
+              //       type: 'success',
+              //       text1: res.message,
+              //       text2: JSON.stringify(res.data),
+              //     });
+              //   })
+              //   .catch((e) => {
+              //     Toast.show({
+              //       type: 'error',
+              //       text2: e.message,
+              //     });
+              //   });
+            }}
           />
         </Section>
         <Section title="二维码相关">
-          <Item title="处理二维码" onPress={() => {}} />
           <Item
             title="处理二维码"
-            description="包含是否处理授权登录"
-            hideSeparator={true}
-            onPress={() => {}}
+            onPress={() => {
+              // TODO: todo
+              Toast.show({ type: 'info', text1: '暂无示例' });
+              // handleQrCode('')
+              //   .then((res) => {
+              //     console.log(res.status);
+              //     console.log(res.message);
+              //     console.log(res.data);
+              //     Toast.show({
+              //       type: 'success',
+              //       text1: res.message,
+              //       text2: JSON.stringify(res.data),
+              //     });
+              //   })
+              //   .catch((e) => {
+              //     Toast.show({
+              //       type: 'error',
+              //       text2: e.message,
+              //     });
+              //   });
+            }}
           />
         </Section>
         <Section title="自动签">
-          <Item title="开启自动签名" onPress={() => {}} />
-          <Item title="关闭自动签名" onPress={() => {}} />
           <Item
             title="开启自动签名"
-            description="医网信App专用"
-            onPress={() => {}}
+            onPress={() => {
+              // TODO: todo
+              Toast.show({ type: 'info', text1: '暂无示例' });
+              // startAutoSign('', firmId)
+              //   .then((res) => {
+              //     console.log(res.status);
+              //     console.log(res.message);
+              //     console.log(res.data);
+              //     Toast.show({
+              //       type: 'success',
+              //       text1: res.message,
+              //       text2: JSON.stringify(res.data),
+              //     });
+              //   })
+              //   .catch((e) => {
+              //     Toast.show({
+              //       type: 'error',
+              //       text2: e.message,
+              //     });
+              //   });
+            }}
           />
           <Item
             title="关闭自动签名"
-            description="医网信App专用"
-            onPress={() => {}}
+            onPress={() => {
+              // TODO: todo
+              Toast.show({ type: 'info', text1: '暂无示例' });
+              // stopAutoSign('', firmId)
+              //   .then((res) => {
+              //     console.log(res.status);
+              //     console.log(res.message);
+              //     console.log(res.data);
+              //     Toast.show({
+              //       type: 'success',
+              //       text1: res.message,
+              //       text2: JSON.stringify(res.data),
+              //     });
+              //   })
+              //   .catch((e) => {
+              //     Toast.show({
+              //       type: 'error',
+              //       text2: e.message,
+              //     });
+              //   });
+            }}
           />
           <Item
             title="获取自动签名信息"
             hideSeparator={true}
-            onPress={() => {}}
+            onPress={() => {
+              getAutoSignInfo()
+                .then((res) => {
+                  console.log(res.status);
+                  console.log(res.message);
+                  console.log(res.data);
+                  Toast.show({
+                    type: 'success',
+                    text1: res.message,
+                    text2: JSON.stringify(res.data),
+                  });
+                })
+                .catch((e) => {
+                  Toast.show({
+                    type: 'error',
+                    text2: e.message,
+                  });
+                });
+            }}
           />
         </Section>
         <Section title="免密">
-          <Item title="开启免密签名" onPress={() => {}} />
-          <Item title="关闭免密签名" onPress={() => {}} />
-          <Item title="免密状态" hideSeparator={true} onPress={() => {}} />
+          <Item
+            title="开启免密签名"
+            description="开启3天的免密"
+            onPress={() => {
+              enablePinExemption(3)
+                .then((res) => {
+                  console.log(res.status);
+                  console.log(res.message);
+                  console.log(res.data);
+                  Toast.show({
+                    type: 'success',
+                    text1: res.message,
+                    text2: JSON.stringify(res.data),
+                  });
+                })
+                .catch((e) => {
+                  Toast.show({
+                    type: 'error',
+                    text2: e.message,
+                  });
+                });
+            }}
+          />
+          <Item
+            title="关闭免密签名"
+            onPress={() => {
+              clearPin();
+              Toast.show({ type: 'success', text2: '关闭成功' });
+            }}
+          />
+          <Item
+            title="免密状态"
+            hideSeparator={true}
+            onPress={() => {
+              const res = isPinExempt();
+              Toast.show({
+                type: 'success',
+                text1: '免密状态',
+                text2: JSON.stringify(res),
+              });
+            }}
+          />
         </Section>
         <Section title="生物识别">
-          <Item title="开启生物识别" onPress={() => {}} />
-          <Item title="关闭生物识别" onPress={() => {}} />
-          <Item title="生物识别状态" hideSeparator={true} onPress={() => {}} />
+          <Item
+            title="开启生物识别"
+            onPress={() => {
+              enableBiometricAuth()
+                .then((res) => {
+                  console.log(res.status);
+                  console.log(res.message);
+                  console.log(res.data);
+                  Toast.show({
+                    type: 'success',
+                    text1: res.message,
+                    text2: JSON.stringify(res.data),
+                  });
+                })
+                .catch((e) => {
+                  Toast.show({
+                    type: 'error',
+                    text2: e.message,
+                  });
+                });
+            }}
+          />
+          <Item
+            title="关闭生物识别"
+            onPress={() => {
+              disableBiometricAuth()
+                .then((res) => {
+                  console.log(res.status);
+                  console.log(res.message);
+                  console.log(res.data);
+                  Toast.show({
+                    type: 'success',
+                    text1: res.message,
+                    text2: JSON.stringify(res.data),
+                  });
+                })
+                .catch((e) => {
+                  Toast.show({
+                    type: 'error',
+                    text2: e.message,
+                  });
+                });
+            }}
+          />
+          <Item
+            title="生物识别状态"
+            hideSeparator={true}
+            onPress={() => {
+              const res = isBiometricAuthEnabled();
+              Toast.show({
+                type: 'success',
+                text1: '生物识别状态',
+                text2: JSON.stringify(res),
+              });
+            }}
+          />
         </Section>
         <Section title="授权签名">
-          <Item title="开启授权签名" onPress={() => {}} />
-          <Item title="关闭授权签名" hideSeparator={true} onPress={() => {}} />
+          <Item
+            title="开启授权签名"
+            onPress={() => {
+              // TODO: todo
+              Toast.show({ type: 'info', text1: '暂无示例' });
+              // grantSignature(firmId, '', 1)
+              //   .then((res) => {
+              //     console.log(res.status);
+              //     console.log(res.message);
+              //     console.log(res.data);
+              //     Toast.show({
+              //       type: 'success',
+              //       text1: res.message,
+              //       text2: JSON.stringify(res.data),
+              //     });
+              //   })
+              //   .catch((e) => {
+              //     Toast.show({
+              //       type: 'error',
+              //       text2: e.message,
+              //     });
+              //   });
+            }}
+          />
+          <Item
+            title="关闭授权签名"
+            hideSeparator={true}
+            onPress={() => {
+              // TODO: todo
+              Toast.show({ type: 'info', text1: '暂无示例' });
+              // revokeSignature(firmId, '')
+              //   .then((res) => {
+              //     console.log(res.status);
+              //     console.log(res.message);
+              //     console.log(res.data);
+              //     Toast.show({
+              //       type: 'success',
+              //       text1: res.message,
+              //       text2: JSON.stringify(res.data),
+              //     });
+              //   })
+              //   .catch((e) => {
+              //     Toast.show({
+              //       type: 'error',
+              //       text2: e.message,
+              //     });
+              //   });
+            }}
+          />
         </Section>
-        <Section title="配置信息" />
+        <Section title="配置信息">
+          <Item
+            title="当前环境"
+            onPress={() => {
+              const res = getCurrentEnvironment();
+              Toast.show({
+                type: 'success',
+                text1: '当前环境',
+                text2: JSON.stringify(res),
+              });
+            }}
+          />
+          <Item
+            title="当前环境 url"
+            onPress={() => {
+              const res = getCurrentEnvironmentUrl();
+              Toast.show({
+                type: 'success',
+                text1: '当前环境 url',
+                text2: JSON.stringify(res),
+              });
+            }}
+          />
+          <Item
+            title="SDK 版本号"
+            onPress={() => {
+              const res = getVersion();
+              Toast.show({
+                type: 'success',
+                text1: 'SDK 版本号',
+                text2: JSON.stringify(res),
+              });
+            }}
+          />
+          <Item
+            title="当前语言"
+            onPress={() => {
+              const res = getCurrentLanguage();
+              Toast.show({
+                type: 'success',
+                text1: '当前语言',
+                text2: JSON.stringify(res),
+              });
+            }}
+          />
+          <Item
+            title="用户 openId"
+            onPress={() => {
+              const res = getOpenId();
+              Toast.show({
+                type: 'success',
+                text1: '用户 openId',
+                text2: JSON.stringify(res),
+              });
+            }}
+          />
+          <Item
+            title="修改界面语言"
+            onPress={() => {
+              changeLanguage('zh-Hans');
+              Toast.show({
+                type: 'success',
+                text2: '修改为中文',
+              });
+            }}
+          />
+          <Item
+            title="显示 PIN 输入页面"
+            hideSeparator={true}
+            onPress={() => {
+              showPinInput()
+                .then((res) => {
+                  console.log(res.status);
+                  console.log(res.message);
+                  console.log(res.data);
+                  Toast.show({
+                    type: 'success',
+                    text1: res.message,
+                    text2: JSON.stringify(res.data),
+                  });
+                })
+                .catch((e) => {
+                  Toast.show({
+                    type: 'error',
+                    text2: e.message,
+                  });
+                });
+            }}
+          />
+        </Section>
       </ScrollView>
       <Toast />
     </SafeAreaView>
