@@ -1,5 +1,5 @@
 {
-  "name": "react-native-ywx",
+  "name": "@digitalyixin/react-native-ywx",
   "version": "0.1.0",
   "description": "react-native-ywx",
   "main": "./lib/module/index.js",
