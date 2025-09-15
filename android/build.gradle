@@ -76,6 +76,7 @@ dependencies {
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
   implementation "cn.org.bjca.trust.android:ywx-sdk:4.1.1-beta@aar"
+  implementation 'com.google.code.gson:gson:2.11.0'
 }
 
 react {
