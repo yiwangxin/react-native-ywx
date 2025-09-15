@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   s.source_files = "ios/**/*.{h,m,mm,cpp}"
   s.private_header_files = "ios/**/*.h"
 
-  s.dependency "YWXSignSDK", "~> 4.0.11"
+  s.dependency "YWXSignSDK", "~> 4.1.0"
 
 
   install_modules_dependencies(s)

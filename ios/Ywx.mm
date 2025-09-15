@@ -9,21 +9,29 @@ RCT_EXPORT_MODULE()
   return std::make_shared<facebook::react::NativeYwxSpecJSI>(params);
 }
 
-- (void)initialize:(nonnull NSString *)clientId environment:(double)environment {
-  
+- (void)initialize:(nonnull NSString *)clientId environment:(double)environment customUrl:(nonnull NSString *)customUrl {
   dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
     YWXEnvironment env;
     if (environment == 1) {
-      env = YWXEnvironmentTest; // 集成环境
+      env = YWXEnvironmentSZYX; // 医信环境
     } else if (environment == 2) {
-      env = YWXEnvironmentBeta; // 测试环境
+      env = YWXEnvironmentTest; // 集成环境
     } else if (environment == 3) {
+      env = YWXEnvironmentBeta; // 测试环境
+    } else if (environment == 4) {
       env = YWXEnvironmentDev; // 开发环境
+    } else if (environment == 5) {
+      env = YWXEnvironmentCustom; // 自定义域名环境
     } else {
       env = YWXEnvironmentPublic; // 生产环境
     }
     
-    [YWXSignManager.sharedManager startWithClientId:clientId environment:env];
+    if (customUrl.length > 0) {
+      env = YWXEnvironmentCustom;
+      [YWXSignManager.sharedManager startWithClientId:clientId customURL:customUrl];
+    } else {
+      [YWXSignManager.sharedManager startWithClientId:clientId environment:env];
+    }
   });
 }
 
@@ -187,20 +195,14 @@ RCT_EXPORT_MODULE()
   
   dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
     [YWXSignManager.sharedManager requestUserInfoWithCompletion:^(YWXSignStatusCode  _Nonnull status, NSString * _Nonnull message, id  _Nullable data) {
-      NSLog(@"A=%@", status);
-      NSLog(@"B=%@", message);
-      NSLog(@"C=%@", data);
-      NSLog(@"F=%d", [status isKindOfClass:[NSString class]]);
       NSDictionary *result = @{
         @"status": status ?: @"",
         @"message": message ?: @"",
         @"data": data ?: @"",
       };
       if ([status isEqualToString:YWXSignStatusCodeSuccess]) {
-        NSLog(@"D");
         resolve(result);
       } else {
-        NSLog(@"E");
         reject(status, message, nil);
       }
     }];

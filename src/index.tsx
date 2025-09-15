@@ -6,9 +6,14 @@ import Ywx, { Environment, type Result } from './NativeYwx';
  * 初始化 SDK
  * @param clientId 厂商 ID
  * @param environment 环境枚举
+ * @param customUrl 自定义域名
  */
-export function initialize(clientId: string, environment: Environment): void {
-  return Ywx.initialize(clientId, environment);
+export function initialize(
+  clientId: string,
+  environment: Environment,
+  customUrl?: string
+): void {
+  return Ywx.initialize(clientId, environment, customUrl);
 }
 
 /**

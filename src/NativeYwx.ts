@@ -3,9 +3,11 @@ import { TurboModuleRegistry } from 'react-native';
 
 export enum Environment {
   Public = 0, // 生产环境
-  Test = 1, // 集成环境
-  Beta = 2, // 测试环境
-  Dev = 3, // 开发环境
+  Szyx = 1, // 医信环境
+  Test = 2, // 集成环境
+  Beta = 3, // 测试环境
+  Dev = 4, // 开发环境
+  Custom = 5, // 自定义域名环境
 }
 
 export interface Result {
@@ -21,8 +23,13 @@ export interface Spec extends TurboModule {
    * 初始化 SDK
    * @param clientId 厂商 ID
    * @param environment 环境枚举
+   * @param customUrl 自定义域名
    */
-  initialize(clientId: string, environment: Environment): void;
+  initialize(
+    clientId: string,
+    environment: Environment,
+    customUrl?: string
+  ): void;
 
   /**
    * 设置导航栏样式
