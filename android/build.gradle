@@ -74,6 +74,8 @@ def kotlin_version = getExtOrDefault("kotlinVersion")
 dependencies {
   implementation "com.facebook.react:react-android"
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+
+  implementation "cn.org.bjca.trust.android:ywx-sdk:4.1.1-beta@aar"
 }
 
 react {
