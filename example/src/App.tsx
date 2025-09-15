@@ -45,7 +45,7 @@ import {
   // stopAutoSign,
   // grantSignature,
   // revokeSignature,
-} from 'react-native-ywx';
+} from '@digitalyixin/react-native-ywx';
 import Toast from 'react-native-toast-message';
 
 export default function App() {

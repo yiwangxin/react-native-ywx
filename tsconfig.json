@@ -2,7 +2,7 @@
   "compilerOptions": {
     "rootDir": ".",
     "paths": {
-      "react-native-ywx": ["./src/index"]
+      "@digitalyixin/react-native-ywx": ["./src/index"]
     },
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
